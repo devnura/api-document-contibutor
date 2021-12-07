@@ -50,14 +50,14 @@ var router = express.Router();
 
 var connectionRouter = require('./app/controllers/connectionController/routes')
 var loginRouter = require('./app/controllers/loginController/routes')
-// var logoutRouter = require('./app/controllers/logoutController/routes')
+var userRouter = require('./app/controllers/userController/routes')
 
 //route v1
 app.use('/api/v1/', router);
 
 router.use('/connection', connectionRouter)
 router.use('/login', loginRouter)
-// router.use('/logout', logoutRouter)
+router.use('/user', userRouter)
 
 const port = process.env.APP_PORT || 9000
 
