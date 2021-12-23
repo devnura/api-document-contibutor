@@ -1,5 +1,3 @@
-const moment = require('moment')
-
 /*
     Config
  */
@@ -155,17 +153,9 @@ exports.updateUser = async (req, res) => {
 
         let check = await checkUserUpdate(req.body, before, db)
 
-        if(check.n_username){
-            return res.status(200).send({
-                status: "03",
-                message: "USERNAME TELAH DIGUNAKAN !",
-                data: {}
-            })
-        }
-
         if(check.e_email){
             return res.status(200).send({
-                status: "04",
+                status: "03",
                 message: "EMAIL TELAH DIGUNAKAN !",
                 data: {}
             })
@@ -173,7 +163,7 @@ exports.updateUser = async (req, res) => {
 
         if(check.e_phone_number){
             return res.status(200).send({
-                status: "05",
+                status: "04",
                 message: "NOMOR TELAH DIGUNAKAN !",
                 data: {}
             })

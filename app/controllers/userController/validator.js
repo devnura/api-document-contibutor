@@ -28,8 +28,6 @@ const update_rules = () => {
             .isLength({max: 8}).withMessage('id is out of length!'),
         check('i_group').notEmpty().isNumeric().withMessage('i_group is required!')
             .isLength({max: 8}).withMessage('i_group is out of length!'),
-        check('n_username').notEmpty().withMessage('n_username is required!')
-            .isLength({max: 16}).withMessage('n_username is out of length!'),
         check('e_fullname').notEmpty().withMessage('e_fullname is required!')
             .isLength({max: 64}).withMessage('e_fullname is out of length!'),
         check('e_email').notEmpty().withMessage('e_email is required!')

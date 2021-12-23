@@ -11,7 +11,7 @@ const service = async (params, body, trx) => {
 		i_group: body.i_group,
 		i_updated_by: 1,
 		n_updated_by: "hard code",
-		d_updated_at: moment().format("YYYY-MM-DD HH:mm:SS")
+		d_updated_at: moment()
 	}, ["i_id", "n_username"])
 	.where({"i_id" : params.id})
 

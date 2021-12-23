@@ -28,6 +28,7 @@ const service = async (trx) => {
             "tmu.b_active": true,
 			"tmu.d_deleted_at": null
         })
+		.orderBy('i_id', 'ASC')
 
     if (!rows) return false
 

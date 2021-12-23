@@ -12,7 +12,6 @@ const service = async (body, trx) => {
             'tmu.n_username': body.n_username
         })
 
-    
     validasi.e_email = await trx('public.t_m_user as tmu')
         .first("tmu.e_email")
         .where({
