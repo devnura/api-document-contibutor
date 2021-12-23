@@ -17,7 +17,7 @@ const post_rules = () => {
             .isEmail().withMessage('e_email is invalid!')
             .isLength({max: 64}).withMessage('e_email is out of length!'),
         check('e_phone_number').notEmpty().withMessage('e_phone_number is required!')
-            .isLength({max: 13}).withMessage('e_phone_number is out of length!'),
+            .isLength({max: 14, min: 11}).withMessage('e_phone_number is out of length!'),
     ]
 }
 
