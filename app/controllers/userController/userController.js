@@ -143,7 +143,7 @@ exports.updateUser = async (req, res) => {
 
         let before =  await find(req.params, db)
 
-        if(!before){
+        if(!before || before.c_status == "X"){
             return res.status(200).send({
                 status: "02",
                 message: "USER TIDAK DITEMUKAN !",
@@ -202,7 +202,7 @@ exports.deleteUserById = async (req, res) => {
 
         let before =  await find(req.params, db)
 
-        if(!before){
+        if(!before || before.c_status == "X"){
             return res.status(200).send({
                 status: "02",
                 message: "USER TIDAK DITEMUKAN !",

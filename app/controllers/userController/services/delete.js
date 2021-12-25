@@ -5,6 +5,7 @@ const service = async (params, trx) => {
     console.log('[*] Deleteing user...')
 
     let rows = await trx('public.t_m_user').update({
+        "c_status": "X",
 		"i_deleted_by" : 1,
 		"n_deleted_by" : 1,
 		"d_deleted_at": moment()
