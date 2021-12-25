@@ -1,7 +1,5 @@
 const service = async (params, trx) => {
 
-    console.log('[*] Getting t_m_user...')
-
     let rows = await trx
         .first("tmu.i_id",
 		"tmu.n_username",

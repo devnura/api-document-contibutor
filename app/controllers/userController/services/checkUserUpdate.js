@@ -1,6 +1,4 @@
 const service = async (body, before, trx) => {
-
-    console.log('[*] Getting t_m_user...', body, before)
     
     let validasi = {}
     

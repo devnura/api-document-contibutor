@@ -2,8 +2,6 @@ const bcrypt = require("bcrypt");
 
 const service = async (body, trx) => {
 
-    console.log('[*] Creating new user...')
-
 	// generate salt to hash password
 	const salt = await bcrypt.genSalt(10);
 	// now we set user password to hashed password

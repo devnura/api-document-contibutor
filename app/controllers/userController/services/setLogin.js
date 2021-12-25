@@ -1,6 +1,5 @@
 const service = async (user, c_status, trx) => {
     
-    console.log('[*] CHECKING LOGIN')
     let loginBefore = await trx('public.t_d_login').first('n_username')
     .where({
         n_username : user.n_username,

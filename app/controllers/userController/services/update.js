@@ -2,8 +2,6 @@ const moment = require('moment')
 
 const service = async (params, body, trx) => {
 
-    console.log('[*] Creating new user...')
-
     let rows = await trx("public.t_m_user").update({
 		e_fullname: body.e_fullname,
 		e_email: body.e_email,

@@ -49,7 +49,7 @@ exports.findUser = async (req, res) => {
 
 exports.findUserById = async (req, res) => {
 
-    console.log("Method name : findUserById")
+    console.log("[*] Method name : findUserById")
     try {
 
             let user = await find(req.params, db);
@@ -138,7 +138,7 @@ exports.createUser = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
 
-    console.log("Method name : updateUser")
+    console.log("[*] Method name : updateUser")
     try {
 
         let before =  await find(req.params, db)
@@ -197,7 +197,7 @@ exports.updateUser = async (req, res) => {
 
 exports.deleteUserById = async (req, res) => {
 
-    console.log("Method name : deleteUserById")
+    console.log("[*] Method name : deleteUserById")
     try {
 
         let before =  await find(req.params, db)

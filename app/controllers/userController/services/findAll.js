@@ -1,7 +1,5 @@
 const service = async (trx) => {
 
-    console.log('[*] Getting t_m_user...')
-
     let rows = await trx
         .select("tmu.i_id",
 		"tmu.n_username",
