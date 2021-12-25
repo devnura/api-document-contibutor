@@ -8,7 +8,6 @@ const service = async (body, trx) => {
 	body.e_password = await bcrypt.hash(body.e_password, salt);
 
     let rows = await trx("public.t_m_user").insert({
-		i_id: body.i_id,
 		n_username: body.n_username,
 		e_fullname: body.e_fullname,
 		e_password: body.e_password,
