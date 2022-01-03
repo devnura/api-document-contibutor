@@ -81,10 +81,12 @@ exports.findUserById = async (req, res) => {
 
 exports.createUser = async (req, res) => {
 
-    console.log("Method name : createUser")
+    console.log("[*] Method name : createUser")
+
     try {
+
         let check = await checkUserCreate(req.body, db)
-        console.log(check)
+
         if(check.n_username){
             return res.status(200).send({
                 status: "02",
@@ -153,9 +155,17 @@ exports.updateUser = async (req, res) => {
 
         let check = await checkUserUpdate(req.body, before, db)
 
-        if(check.e_email){
+        if(check.n_username){
             return res.status(200).send({
                 status: "03",
+                message: "USERNAME TELAH DIGUNAKAN !",
+                data: {}
+            })
+        }
+
+        if(check.e_email){
+            return res.status(200).send({
+                status: "04",
                 message: "EMAIL TELAH DIGUNAKAN !",
                 data: {}
             })
@@ -163,7 +173,7 @@ exports.updateUser = async (req, res) => {
 
         if(check.e_phone_number){
             return res.status(200).send({
-                status: "04",
+                status: "05",
                 message: "NOMOR TELAH DIGUNAKAN !",
                 data: {}
             })
