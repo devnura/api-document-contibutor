@@ -2,11 +2,11 @@ const db = require('../../../config/database')
 
 const service = async () => {
 
-    const conn = await db.raw('SELECT CURRENT_TIMESTAMP as current')
-    console.log("[*] current : ", conn.rows[0])
+    const conn = await db.first(db.raw(`TO_CHAR(NOW(), 'YYYY-MM-DD HH:mm:SS') AS current`))
+    console.log("[*] current : ", conn)
     if (!conn) return false
 
-    return conn.rows[0]
+    return conn
 
 }
 
