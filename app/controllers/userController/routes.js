@@ -9,6 +9,8 @@ const {
     deleteUserById
 } = require('./userController')
 
+const jwtFerify = require('../../middleware/jwtFerify')
+
 const {
     post_rules,
     get_rules,
@@ -17,11 +19,11 @@ const {
     delete_rules
 } = require('./validator')
 
-router.get('/', findUser)
-router.get('/:id', get_rules(), validate, findUserById)
-router.post('/', post_rules(), validate, createUser)
-router.put('/:id', update_rules(), validate, updateUser)
-router.delete('/:id', delete_rules(), validate, deleteUserById)
+router.get('/', jwtFerify, findUser)
+router.get('/:id', jwtFerify, get_rules(), validate, findUserById)
+router.post('/', jwtFerify, post_rules(), validate, createUser)
+router.put('/:id', jwtFerify, update_rules(), validate, updateUser)
+router.delete('/:id', jwtFerify, delete_rules(), validate, deleteUserById)
 
 // router.get('/',  function (req, res) {
 //     return res.status(200).json({

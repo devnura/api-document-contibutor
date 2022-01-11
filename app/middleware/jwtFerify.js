@@ -27,11 +27,7 @@ const middleware = (req, res, next) => {
             data: {}
         }) //401
 
-        req.c_login = user.c_login
-        req.n_user = user.n_user
-        req.c_pos = user.c_pos
-        req.d_login = user.d_login
-
+        req.payload = user
 
         next();
     })

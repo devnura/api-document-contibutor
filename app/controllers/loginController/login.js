@@ -45,13 +45,15 @@ const controller = async (req, res) => {
                     data: {}
                 })
             }
-
+            console.log("Ini User", user)
             let login = await setLogin(user, 'S', trx)
 
             let d_login = moment(login).format('YYYY-MM-DD')
 
             let token = jwt.sign({
+                i_id: user.i_id,
                 n_username: user.n_username,
+                e_fullname: user.e_fullname,
                 i_group: user.i_group,
                 d_login: d_login,
             }, ACCESS_TOKEN_SECRET, {

@@ -19,7 +19,6 @@ exports.findUser = async (req, res) => {
 
     console.log("Method name : findUser")
     try {
-
             let user = await findAll(db);
 
             if (!user) {
@@ -111,7 +110,7 @@ exports.createUser = async (req, res) => {
             })
         }
 
-        let user = await create(req.body, db);
+        let user = await create(req.body, db, req.payload);
 
         if (!user) {
             return res.status(200).send({
@@ -179,7 +178,7 @@ exports.updateUser = async (req, res) => {
             })
         }
 
-        let user = await update(req.params, req.body, db);
+        let user = await update(req.params, req.body, db, req.payload);
 
         if (!user) {
             return res.status(200).send({
@@ -220,7 +219,7 @@ exports.deleteUserById = async (req, res) => {
             })
         }
 
-        let user = await softDelete(req.params, db);
+        let user = await softDelete(req.params, db, req.payload);
 
         if (!user) {
             return res.status(200).send({

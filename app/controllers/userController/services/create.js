@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 
-const service = async (body, trx) => {
+const service = async (body, trx, payload) => {
 
 	// generate salt to hash password
 	const salt = await bcrypt.genSalt(10);
@@ -14,8 +14,8 @@ const service = async (body, trx) => {
 		e_email: body.e_email,
 		e_phone_number: body.e_phone_number,
 		i_group: body.i_group,
-		i_created_by: 1,
-		n_created_by: "hard code"
+		i_created_by: payload.i_id,
+		n_created_by: payload.n_username
 	}, ["i_id", "n_username"])
 
     if (!rows) return false

@@ -93,7 +93,7 @@ exports.createRole = async (req, res) => {
             })
         }
 
-        let role = await create(req.body, db);
+        let role = await create(req.body, db, req.payload);
 
         if (!role) {
             return res.status(200).send({
@@ -145,7 +145,7 @@ exports.updateRole = async (req, res) => {
             })
         }
 
-        let user = await update(req.params, req.body, db);
+        let user = await update(req.params, req.body, db, req.payload);
 
         if (!user) {
             return res.status(200).send({
@@ -186,7 +186,7 @@ exports.deleteRoleById = async (req, res) => {
             })
         }
 
-        let role = await softDelete(req.params, db);
+        let role = await softDelete(req.params, db, req.payload);
 
         if (!role) {
             return res.status(200).send({

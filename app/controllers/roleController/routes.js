@@ -9,6 +9,8 @@ const {
     deleteRoleById
 } = require('./roleController')
 
+const jwtFerify = require('../../middleware/jwtFerify')
+
 const {
     post_rules,
     get_rules,
@@ -17,11 +19,11 @@ const {
     delete_rules
 } = require('./validator')
 
-router.get('/', findRole)
-router.get('/:id', get_rules(), validate, findRoleById)
-router.post('/', post_rules(), validate, createRole)
-router.put('/:id', update_rules(), validate, updateRole)
-router.delete('/:id', delete_rules(), validate, deleteRoleById)
+router.get('/', jwtFerify, findRole)
+router.get('/:id', jwtFerify, get_rules(), validate, findRoleById)
+router.post('/', jwtFerify, post_rules(), validate, createRole)
+router.put('/:id', jwtFerify, update_rules(), validate, updateRole)
+router.delete('/:id', jwtFerify, delete_rules(), validate, deleteRoleById)
 
 // router.get('/',  function (req, res) {
 //     return res.status(200).json({
