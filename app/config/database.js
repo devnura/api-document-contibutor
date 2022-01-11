@@ -2,7 +2,7 @@ require('dotenv').config();
 
 module.exports = require('knex')({
     client: process.env.DB_CLIENT || 'pg',
-    debug: process.env.DB_DEBUG || false,
+    debug: false,
     connection: {
         host: process.env.DB_HOST || 'localhost',
         port: process.env.DB_PORT || 5430,

@@ -12,4 +12,4 @@ const service = async (body, trx) => {
     return rows
 }
 
-module.exports = service;
+module.exports = service; 
