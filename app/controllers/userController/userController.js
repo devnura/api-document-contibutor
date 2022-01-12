@@ -19,7 +19,7 @@ exports.findUser = async (req, res) => {
 
     console.log("Method name : findUser")
     try {
-            let user = await findAll(db);
+            let user = await findAll(req.body, db);
 
             if (!user) {
                 return res.status(200).send({

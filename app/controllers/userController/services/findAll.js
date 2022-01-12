@@ -1,4 +1,4 @@
-const service = async (trx) => {
+const service = async (body, trx) => {
 
     let rows = await trx
         .select("tmu.i_id",
@@ -23,6 +23,12 @@ const service = async (trx) => {
         .leftJoin('public.t_m_group as tmg', function () {
             this.on('tmg.i_id', '=', 'tmu.i_group')
         })
+		.whereIn(
+			'tmu.c_status', body.c_status
+		)
+		.whereIn(
+			'tmu.i_group', body.i_group
+		)
 		.orderBy('i_id', 'ASC')
 
     if (!rows) return false
