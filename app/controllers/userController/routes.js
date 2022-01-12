@@ -21,7 +21,7 @@ const {
 
 router.post('/', jwtFerify, findUser)
 router.get('/:id', jwtFerify, get_rules(), validate, findUserById)
-router.post('/', jwtFerify, post_rules(), validate, createUser)
+router.post('/create', jwtFerify, post_rules(), validate, createUser)
 router.put('/:id', jwtFerify, update_rules(), validate, updateUser)
 router.delete('/:id', jwtFerify, delete_rules(), validate, deleteUserById)
 

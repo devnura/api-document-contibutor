@@ -24,10 +24,10 @@ const service = async (body, trx) => {
             this.on('tmg.i_id', '=', 'tmu.i_group')
         })
 		.whereIn(
-			'tmu.c_status', body.c_status
+			'tmu.c_status', body?.c_status || []
 		)
 		.whereIn(
-			'tmu.i_group', body.i_group
+			'tmu.i_group', body?.i_group || []
 		)
 		.orderBy('i_id', 'ASC')
 
