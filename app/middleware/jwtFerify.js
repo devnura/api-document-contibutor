@@ -17,10 +17,6 @@ const middleware = (req, res, next) => {
     jwt.verify(token, ACCESS_TOKEN_SECRET, async (err, user) => {
         //check verifikasi token, termasuk expired
 
-        console.log({
-            "JWT Payload  ": user
-        })
-
         if (err) return res.status(200).send({
             status: '01',
             message: err.message,
