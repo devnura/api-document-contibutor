@@ -1,4 +1,4 @@
-const service = async (trx) => {
+const service = async (body, trx) => {
 
     console.log('[*] Getting t_m_role...')
 
@@ -21,6 +21,7 @@ const service = async (trx) => {
 			trx.raw("TO_CHAR(d_deleted_at, 'YYYY-MM-DD HH:mm:SS') AS d_deleted_at")
 		])
         .from('public.t_m_group as tmg')
+		.whereIn('c_status', body?.c_status || [])
 
     if (!rows) return false
 
