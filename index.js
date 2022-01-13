@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-// const cors = require('cors')
+const cors = require('cors')
 const morgan = require('morgan')
 const addRequestId = require('express-request-id')({setHeader: false});
 const fs = require('fs')
@@ -12,7 +12,7 @@ const moment = require('moment')
 var date = new Date();
 var day = date.getDate();
 var month = date.getMonth() + 1;
-
+app.use(cors())
 //create folder/file if not exists
 if (!fs.existsSync(`./logs`)) {
     fs.mkdirSync(`./logs`)
