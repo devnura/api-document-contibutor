@@ -19,7 +19,7 @@ const {
     delete_rules
 } = require('./validator')
 
-router.post('/', jwtFerify, findUser)
+router.get('/', jwtFerify, findUser)
 router.get('/:id', jwtFerify, get_rules(), validate, findUserById)
 router.post('/create', jwtFerify, post_rules(), validate, createUser)
 router.put('/:id', jwtFerify, update_rules(), validate, updateUser)
