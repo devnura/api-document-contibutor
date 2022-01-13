@@ -14,6 +14,8 @@ const softDelete = require('./services/delete')
 
 const checkUserCreate = require('./services/checkUserCreate')
 const checkUserUpdate = require('./services/checkUserUpdate')
+const changePassword = require('./services/changePassword')
+const changeActive = require('./services/changeActive')
 
 exports.findUser = async (req, res) => {
 
@@ -245,9 +247,9 @@ exports.deleteUserById = async (req, res) => {
     }
 }
 
-exports.changePassword = async (req, res) => {
+exports.setPassword = async (req, res) => {
     
-    console.log("Method name : changePassword")
+    console.log("Method name : setPassword")
     try {
 
         let user = await find(req.params, db);
@@ -260,10 +262,12 @@ exports.changePassword = async (req, res) => {
             })
         }
 
+        let newData = await changePassword(req.params, req.body, db, req.payload)
+
         return res.status(200).send({
             status: "00",
             message: "Suksess",
-            data: user
+            data: newData
         })
 
 
@@ -277,9 +281,9 @@ exports.changePassword = async (req, res) => {
     }
 }
 
-exports.changeActive = async (req, res) => {
+exports.setActive = async (req, res) => {
     
-    console.log("Method name : changeActive")
+    console.log("Method name : setActive")
     try {
 
         let user = await find(req.params, db);
@@ -291,13 +295,13 @@ exports.changeActive = async (req, res) => {
                 data: {}
             })
         }
+        let newData = await changeActive(req.params, req.body, db, req.payload)
 
         return res.status(200).send({
             status: "00",
             message: "Suksess",
-            data: user
+            data: newData
         })
-
 
     } catch (e) {
         console.error("[x] message : ", e.message)

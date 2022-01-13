@@ -46,6 +46,26 @@ const delete_rules = () => {
     ]
 }
 
+const change_password_rules = () => {
+    return [
+        check('id').notEmpty().withMessage('id is required!')
+            .isNumeric().withMessage('id is not numeric!')
+            .isLength({max: 8}).withMessage('id is out of length!'),
+        check('e_password').notEmpty().withMessage('e_password is required!')
+            .isLength({max: 16}).withMessage('e_password is out of length!'),
+    ]
+}
+
+const change_active_rules = () => {
+    return [
+        check('id').notEmpty().withMessage('id is required!')
+            .isNumeric().withMessage('id is not numeric!')
+            .isLength({max: 8}).withMessage('id is out of length!'),
+        check('b_active').notEmpty().withMessage('b_active is required!')
+            .isLength({max: 16}).withMessage('b_active is out of length!'),
+    ]
+}
+
 const get_rules = () => {
     return [
         check('id').notEmpty().withMessage('id is required!')
@@ -75,5 +95,7 @@ module.exports = {
     get_rules,
     update_rules,
     delete_rules,
+    change_password_rules,
+    change_active_rules,
     validate
 }
