@@ -19,7 +19,7 @@ exports.findUser = async (req, res) => {
 
     console.log("Method name : findUser")
     try {
-            let user = await findAll(req.body, db);
+            let user = await findAll(db);
 
             if (!user) {
                 return res.status(200).send({
@@ -234,6 +234,70 @@ exports.deleteUserById = async (req, res) => {
             message: "USER BERHASIL DIHAPUS",
             data: user
         })
+
+    } catch (e) {
+        console.error("[x] message : ", e.message)
+        return res.status(200).send({ //500
+            status: '99',
+            message: "Terjadi kesalahan system !",
+            data: {}
+        })
+    }
+}
+
+exports.changePassword = async (req, res) => {
+    
+    console.log("Method name : changePassword")
+    try {
+
+        let user = await find(req.params, db);
+
+        if (!user) {
+            return res.status(200).send({
+                status: "01",
+                message: "User tidak ditemukan !",
+                data: {}
+            })
+        }
+
+        return res.status(200).send({
+            status: "00",
+            message: "Suksess",
+            data: user
+        })
+
+
+    } catch (e) {
+        console.error("[x] message : ", e.message)
+        return res.status(200).send({ //500
+            status: '99',
+            message: "Terjadi kesalahan system !",
+            data: {}
+        })
+    }
+}
+
+exports.changeActive = async (req, res) => {
+    
+    console.log("Method name : changeActive")
+    try {
+
+        let user = await find(req.params, db);
+
+        if (!user) {
+            return res.status(200).send({
+                status: "01",
+                message: "User tidak ditemukan !",
+                data: {}
+            })
+        }
+
+        return res.status(200).send({
+            status: "00",
+            message: "Suksess",
+            data: user
+        })
+
 
     } catch (e) {
         console.error("[x] message : ", e.message)
