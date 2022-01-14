@@ -1,4 +1,4 @@
-const service = async (body, trx) => {
+const service = async (trx) => {
 
     console.log('[*] Getting t_d_document...')
 
@@ -6,7 +6,6 @@ const service = async (body, trx) => {
         .select([
 			"i_id",
 			"c_document_code",
-			"e_encode_document",
 			"e_tittle",
 			"c_desc",
 			"c_status",
@@ -28,8 +27,8 @@ const service = async (body, trx) => {
 			trx.raw("TO_CHAR(d_deleted_at, 'YYYY-MM-DD HH:mm:SS') AS d_deleted_at")
 		])
         .from('doc.t_d_document as tdd')
-		.whereIn(
-			'tdd.c_status', body?.c_status || []
+		.where(
+			'tdd.c_status', "=", "A"
 		)
 
     if (!rows) return false

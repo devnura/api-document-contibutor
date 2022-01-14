@@ -5,10 +5,13 @@ const {
 
 const post_rules = () => {
     return [
-        check('n_group').notEmpty().withMessage('n_group is required!')
-            .isLength({max: 32}).withMessage('n_group is out of length!'),
-        check('e_desc').notEmpty().withMessage('e_desc is required!')
-            .isLength({max: 64}).withMessage('e_desc is out of length!'),
+        check('e_tittle').notEmpty().withMessage('e_tittle is required!')
+            .isLength({max: 64}).withMessage('e_tittle is out of length!'),
+        check('c_desc').notEmpty().withMessage('c_desc is required!')
+            .isLength({max: 64}).withMessage('c_desc is out of length!'),
+        check('e_encode_document').notEmpty().withMessage('e_encode_document is required!'),
+        check('detail').isArray().notEmpty().withMessage('detail is require'),
+        check('detail.*.i_id').notEmpty().withMessage('i_id is require!'),
     ]
 }
 

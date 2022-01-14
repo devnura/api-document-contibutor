@@ -20,7 +20,7 @@ exports.findDocument = async (req, res) => {
     console.log("[*] Method name : findDocument")
     try {
 
-            let document = await findAll(req.body, db);
+            let document = await findAll(db);
 
             if (!document) {
                 return res.status(200).send({
@@ -81,31 +81,31 @@ exports.findDocumentById = async (req, res) => {
 
 exports.createDocument = async (req, res) => {
 
-    console.log("[*] Method name : createRole")
+    console.log("[*] Method name : createDocument")
     try {
-        let check = await checkRoleCreate(req.body, db)
-        console.log(check)
-        if(check.n_group){
-            return res.status(200).send({
-                status: "02",
-                message: "NAMA ROLE TELAH DIGUNAKAN !",
-                data: {}
-            })
-        }
+        // let check = await checkRoleCreate(req.body, db)
+        // console.log(check)
+        // if(check.n_group){
+        //     return res.status(200).send({
+        //         status: "02",
+        //         message: "NAMA ROLE TELAH DIGUNAKAN !",
+        //         data: {}
+        //     })
+        // }
 
         let role = await create(req.body, db, req.payload);
 
         if (!role) {
             return res.status(200).send({
                 status: "01",
-                message: "ROLE GAGAL DISIMPAN !",
+                message: "DOCUMENT GAGAL DISIMPAN !",
                 data: {}
             })
         }
 
         return res.status(200).send({
             status: "00",
-            message: "ROLE BERHASIL DISIMPAN",
+            message: "DOCUMENT BERHASIL DISIMPAN",
             data: role
         })
 

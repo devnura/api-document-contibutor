@@ -7,6 +7,7 @@ const fs = require('fs')
 const path = require('path')
 require('dotenv').config()
 const moment = require('moment')
+
 // ---
 //get dates
 var date = new Date();
@@ -27,6 +28,8 @@ var accessLogStream = fs.createWriteStream(path.join(__dirname, 'logs', `log-${m
 //get request ID
 app.use(addRequestId)
 app.use(express.json());
+
+app.use('/static', express.static('doc-files'))
 
 //create morgan token
 morgan.token('id', (req) => { return req.id })
