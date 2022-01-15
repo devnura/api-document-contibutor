@@ -12,8 +12,8 @@ const create = require('./services/create')
 const update = require('./services/update')
 const softDelete = require('./services/delete')
 
-const checkRoleCreate = require('./services/checkRoleCreate')
-const checkRoleUpdate = require('./services/checkRoleUpdate')
+const checkDocumentCreate = require('./services/checkDocumentCreate')
+const checkDocumentUpdate = require('./services/checkDocumentUpdate')
 
 exports.findDocument = async (req, res) => {
 
@@ -83,15 +83,14 @@ exports.createDocument = async (req, res) => {
 
     console.log("[*] Method name : createDocument")
     try {
-        // let check = await checkRoleCreate(req.body, db)
-        // console.log(check)
-        // if(check.n_group){
-        //     return res.status(200).send({
-        //         status: "02",
-        //         message: "NAMA ROLE TELAH DIGUNAKAN !",
-        //         data: {}
-        //     })
-        // }
+        let check = await checkDocumentCreate(req.body, db)
+        if(check.n_group){
+            return res.status(200).send({
+                status: "02",
+                message: "NAMA DOKUMEN TELAH DIGUNAKAN !",
+                data: {}
+            })
+        }
 
         let role = await create(req.body, db, req.payload);
 
@@ -135,7 +134,7 @@ exports.updateDocument = async (req, res) => {
             })
         }
 
-        let check = await checkRoleUpdate(req.body, before, db)
+        let check = await checkDocumentUpdate(req.body, before, db)
 
         if(check.n_role){
             return res.status(200).send({

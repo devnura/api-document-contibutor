@@ -2,13 +2,13 @@ const service = async (body, trx) => {
     
     let validasi = {}
 
-    validasi.n_group = await trx('public.t_m_group as tmg')
-        .first("tmg.n_group")
+    validasi.n_group = await trx('doc.t_d_document as tdd')
+        .first("tdd.e_tittle")
         .where({
-            'tmg.n_group': body.n_group
+            'tdd.e_tittle': body.e_tittle
         })
         .whereNot({
-            "tmg.c_status": "X",
+            "tdd.c_status": "X",
         })
 
     return validasi

@@ -4,10 +4,11 @@ const service = async (params, trx) => {
         .select([
 			"i_id",
 			"c_document_code",
-			"e_encode_document",
 			"e_tittle",
 			"c_desc",
 			"c_status",
+			"q_contributor",
+			"i_current_stat",
 			"b_active",
 			"i_created_by",
 			"n_created_by",
@@ -27,10 +28,7 @@ const service = async (params, trx) => {
 		])
         .from('doc.t_d_document as tdd')
 		.where({
-			"i_id": params.keyword
-		})
-		.orWhere({
-			"c_document_code": params.keyword
+			"i_id": params.id
 		})
 		.first()
 

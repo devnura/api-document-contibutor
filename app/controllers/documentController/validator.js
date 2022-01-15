@@ -37,8 +37,8 @@ const delete_rules = () => {
 
 const get_rules = () => {
     return [
-        check('keyword').notEmpty().withMessage('keyword is required!')
-            .isLength({max: 32}).withMessage('keyword is out of length!'),
+        check('id').notEmpty().withMessage('id is required!')
+            .isLength({max: 32}).withMessage('id is out of length!'),
     ]
 }
 

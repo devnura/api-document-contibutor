@@ -1,5 +1,9 @@
 const { docxToPdfFromBase64 , initIva } = require("iva-converter");
 
+const {
+    API_KEY_FOR_IVA
+} = require('../../../config/secret')
+
 const moment = require("moment")
 
 const service = async (body, trx, payload) => {
@@ -7,7 +11,7 @@ const service = async (body, trx, payload) => {
 
 		let docType = body.e_encode_document.split(",")
 		let resBase64 = body.e_encode_document
-		let i_contributor = body.detail.length
+		let q_contributor = body.detail.length
 
 		// return docType
 
@@ -47,7 +51,8 @@ const service = async (body, trx, payload) => {
 			"e_tittle": body.e_tittle,
 			"c_desc": body.c_desc,
 			"c_status": body.c_status,
-			"i_contributor": i_contributor,
+			"q_contributor": q_contributor,
+			"i_current_stat": 1,
 			"i_created_by": payload.i_id,
 			"n_created_by": payload.e_fullname,
 		}, ["i_id", "c_document_code"])
