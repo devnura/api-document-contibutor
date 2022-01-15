@@ -8,7 +8,7 @@ const service = async (params, trx, payload) => {
 		"i_deleted_by" : payload.i_id,
 		"n_deleted_by" : payload.e_fullname,
 		"d_deleted_at": moment()
-		}, ['i_id', 'n_group'])
+		}, ['i_id', 'e_tittle'])
         .where({
         "i_id": params.id,
         })

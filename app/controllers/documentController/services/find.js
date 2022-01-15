@@ -12,12 +12,6 @@ const service = async (params, trx) => {
 			"b_active",
 			"i_created_by",
 			"n_created_by",
-			"d_created_at",
-			"i_updated_by",
-			"n_updated_by",
-			"d_updated_at",
-			"i_deleted_by",
-			"n_deleted_by",
 			trx.raw("TO_CHAR(d_created_at, 'YYYY-MM-DD HH:mm:SS') AS d_created_at"),
 			"i_updated_by",
 			"n_updated_by",
@@ -42,6 +36,7 @@ const service = async (params, trx) => {
 			"tdd.i_stat",
 			"tdd.b_approve",
 			"tdd.c_note",
+			"tdd.d_approve_at"
 		])
 		.leftJoin('public.t_m_user as tmu', function () {
             this.on('tdd.i_user', '=', 'tmu.i_id')
@@ -49,11 +44,9 @@ const service = async (params, trx) => {
 		.where({
 			"c_document_code": rows.c_document_code
 		})
+		
+		return {...rows, ...{detail : details}}
 
-    return {
-		rows,
-		details
-	}
 }
 
 module.exports = service;

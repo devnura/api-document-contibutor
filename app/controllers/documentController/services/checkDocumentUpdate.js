@@ -1,8 +1,8 @@
 const service = async (body, before, trx) => {
     
     let validasi = {}
-    
-        validasi.n_group = await trx('doc.t_d_document as tdd')
+
+        validasi.e_tittle = await trx('doc.t_d_document as tdd')
         .first("tdd.e_tittle")
         .where({
             'tdd.e_tittle': body.e_tittle

@@ -2,18 +2,40 @@ const moment = require('moment')
 
 const service = async (params, body, trx, payload) => {
 
-    let rows = await trx("public.t_m_group").update({
-		n_group: body.n_group,
-		e_desc: body.e_desc,
-		i_updated_by: payload.i_id,
-		n_updated_by: payload.e_fullname,
-		d_updated_at: moment()
-	}, ["i_id", "n_group"])
-	.where({"i_id" : params.id})
+	let q_contributor = body.detail.length
 
-    if (!rows) return false
+	const rows =  await trx("doc.t_d_document").update({
+		"e_tittle": body.e_tittle,
+		"c_desc": body.c_desc,
+		"c_status": body.c_status,
+		"q_contributor": q_contributor,
+		"i_current_stat": 1,
+		"i_updated_by": payload.i_id,
+		"n_updated_by": payload.e_fullname,
+		"d_updated_at": moment(),
+	}, ["i_id", "c_document_code"])
+	.where({
+		"i_id": params.id
+	})
 
-    return rows
+	await trx("doc.t_d_document_detail").where({
+		"c_document_code" : rows[0].c_document_code
+	})
+	.delete()
+
+	let dataDetail = body.detail.map((item, index)=> {
+		return {
+			"c_document_code": rows[0].c_document_code,
+			"i_user": item.i_id,
+			"i_stat": index+1
+		}
+	})
+
+	const detail = await trx("doc.t_d_document_detail").insert(dataDetail, ["i_user"])
+	
+	return {
+		rows, detail
+	}
 }
 
 module.exports = service;

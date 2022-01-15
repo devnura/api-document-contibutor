@@ -52,7 +52,7 @@ const service = async (body, trx, payload) => {
 			"c_desc": body.c_desc,
 			"c_status": body.c_status,
 			"q_contributor": q_contributor,
-			"i_current_stat": 1,
+			"i_current_stat": 0,
 			"i_created_by": payload.i_id,
 			"n_created_by": payload.e_fullname,
 		}, ["i_id", "c_document_code"])
@@ -65,7 +65,7 @@ const service = async (body, trx, payload) => {
 			}
 		})
 
-		const detail = await trx("doc.t_d_document_detail").insert(dataDetail, ["i_user", "i_user"])
+		const detail = await trx("doc.t_d_document_detail").insert(dataDetail, ["i_user"])
 		
 		return {
 			rows, detail
