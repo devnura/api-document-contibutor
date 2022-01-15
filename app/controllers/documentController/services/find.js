@@ -31,8 +31,9 @@ const service = async (params, trx) => {
 	let details = await trx('doc.t_d_document_detail as tdd')
 		.select([
 			"tdd.i_id",
-			"tdd.c_document_code",
 			"tdd.i_user",
+			"tmu.e_fullname",
+			"tmu.e_email",
 			"tdd.i_stat",
 			"tdd.b_approve",
 			"tdd.c_note",
