@@ -14,8 +14,8 @@ const update = require('./services/update')
 const softDelete = require('./services/delete')
 const approve = require('./services/approve')
 
-const checkDocumentCreate = require('./services/checkDocumentCreate')
-const checkDocumentUpdate = require('./services/checkDocumentUpdate')
+const checkCreate = require('./services/checkCreate')
+const checkUpdate = require('./services/checkUpdate')
 
 exports.findDocument = async (req, res) => {
 
@@ -117,7 +117,7 @@ exports.createDocument = async (req, res) => {
 
     console.log("[*] Method name : createDocument")
     try {
-        let check = await checkDocumentCreate(req.body, db)
+        let check = await checkCreate(req.body, db)
         if(check.n_group){
             return res.status(200).send({
                 status: "02",
@@ -168,7 +168,7 @@ exports.updateDocument = async (req, res) => {
             })
         }
 
-        let check = await checkDocumentUpdate(req.body, before, db)
+        let check = await checkUpdate(req.body, before, db)
 
         if(check.e_tittle){
             return res.status(200).send({
