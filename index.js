@@ -31,6 +31,11 @@ app.use(express.json());
 
 app.use('/static', express.static('doc-files'))
 
+// parse application/json
+app.use(bodyParser.json({limit : "100mb"}))
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({limit : "100mb", extended: false }))
+
 //create morgan token
 morgan.token('id', (req) => { return req.id })
 morgan.token('req-body', (req, res) => { return JSON.stringify(req.body) })
