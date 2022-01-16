@@ -63,6 +63,7 @@ const service = async (params, trx, withBase64 = false) => {
 			"tdd.i_id",
 			"tdd.i_user",
 			"tmu.e_fullname",
+			"tmg.n_group",
 			"tmu.e_email",
 			"tdd.i_stat",
 			"tdd.b_approve",
@@ -71,6 +72,9 @@ const service = async (params, trx, withBase64 = false) => {
 		])
 		.leftJoin('public.t_m_user as tmu', function () {
             this.on('tdd.i_user', '=', 'tmu.i_id')
+        })
+		.leftJoin('public.t_m_group as tmg', function () {
+            this.on('tmu.i_group', '=', 'tmg.i_id')
         })
 		.where({
 			"c_document_code": rows.c_document_code
