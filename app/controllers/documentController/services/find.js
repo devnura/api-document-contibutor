@@ -79,6 +79,7 @@ const service = async (params, trx, withBase64 = false) => {
 		.where({
 			"c_document_code": rows.c_document_code
 		})
+		.orderBy("tdd.i_stat", "ASC") 
 		
 		return {...rows, ...{detail : details}}
 
