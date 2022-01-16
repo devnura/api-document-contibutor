@@ -1,5 +1,3 @@
-const moment = require('moment')
-
 const service = async (params, body, trx, payload) => {
 
 	let q_contributor = body.detail.length
@@ -12,7 +10,7 @@ const service = async (params, body, trx, payload) => {
 		"i_current_stat": 1,
 		"i_updated_by": payload.i_id,
 		"n_updated_by": payload.e_fullname,
-		"d_updated_at": moment(),
+		"d_updated_at": trx.raw('NOW()'),
 	}, ["i_id", "c_document_code"])
 	.where({
 		"i_id": params.id

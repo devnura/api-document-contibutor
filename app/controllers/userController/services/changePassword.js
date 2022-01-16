@@ -1,4 +1,3 @@
-const moment = require('moment')
 const bcrypt = require("bcrypt");
 
 const service = async (params, body, trx, payload) => {
@@ -12,7 +11,7 @@ const service = async (params, body, trx, payload) => {
 		e_password: body.e_password,
 		i_updated_by: payload.i_id,
 		n_updated_by: payload.e_fullname,
-		d_updated_at: moment()
+		d_updated_at: trx.raw('NOW()')
 	}, ["i_id", "n_username"])
 	.where({"i_id" : params.id})
 

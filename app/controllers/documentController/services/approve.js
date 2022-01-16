@@ -1,12 +1,10 @@
-const moment = require('moment')
-
 const service = async (body, trx, payload) => {
 
 	const detail = await trx("doc.t_d_document_detail")
 	.update({
 		"b_approve": true,
 		"c_note": body.c_note,
-		"d_approve_at": moment()
+		"d_approve_at": trx.raw('NOW()')
 	}, ['i_stat', 'c_document_code'])
 	.where({
 		"c_document_code" : body.c_document_code,
@@ -35,7 +33,7 @@ const service = async (body, trx, payload) => {
 		"tddd.c_document_code" : rows[0].c_document_code,
 	})
 	.orderBy("i_stat", "ASC")
-	
+
 	let doc = rows[0]
 
 	return {
