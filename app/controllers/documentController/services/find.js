@@ -68,7 +68,7 @@ const service = async (params, trx, withBase64 = false) => {
 			"tdd.i_stat",
 			"tdd.b_approve",
 			"tdd.c_note",
-			"tdd.d_approve_at"
+			trx.raw("TO_CHAR(tdd.d_approve_at, 'YYYY-MM-DD HH:mm:SS') AS d_approve_at")
 		])
 		.leftJoin('public.t_m_user as tmu', function () {
             this.on('tdd.i_user', '=', 'tmu.i_id')
