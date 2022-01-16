@@ -27,8 +27,8 @@ app.use(cors())
 // var accessLogStream = fs.createWriteStream(path.join(__dirname, 'logs', `log-${month}`, `access-${day}.log`), { flags: 'a' });
 
 //get request ID
-// app.use(addRequestId)
-// app.use(express.json());
+app.use(addRequestId)
+app.use(express.json());
 
 app.use('/static', express.static('doc-files'))
 
