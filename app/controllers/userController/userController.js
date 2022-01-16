@@ -280,7 +280,7 @@ exports.setActive = async (req, res) => {
 
         let user = await find(req.params, db);
 
-        if (!user) {
+        if (!user || user.c_status == "X") {
             return res.status(200).send({
                 status: "01",
                 message: "User tidak ditemukan !",
