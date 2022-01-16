@@ -17,6 +17,12 @@ const approve = require('./services/approve')
 const checkCreate = require('./services/checkCreate')
 const checkUpdate = require('./services/checkUpdate')
 
+/*
+    Helper
+ */
+
+const getSetting = require('../../helper/getSetting')
+
 exports.findDocument = async (req, res) => {
 
     console.log("[*] Method name : findDocument")
@@ -54,7 +60,7 @@ exports.findDocumentById = async (req, res) => {
     console.log("[*] Method name : findDocumentById")
     try {
 
-            let document = await find(req.params, db);
+            let document = await find(req.params, db, true);
 
             if (!document) {
                 return res.status(200).send({
@@ -126,7 +132,16 @@ exports.createDocument = async (req, res) => {
             })
         }
 
-        let role = await create(req.body, db, req.payload);
+        const setting = await getSetting('APIKEY02', db)
+        if(!setting){
+            return res.status(200).send({
+                status: "03",
+                message: "DOKUMEN GAGAL DISIMPAN HARAP HUBUNGI ADMINISTRATOR !",
+                data: {}
+            })
+        }
+
+        let role = await create(req.body, db, req.payload, setting);
 
         if (!role) {
             return res.status(200).send({

@@ -1,6 +1,34 @@
-const service = async (params, trx) => {
-
-    let rows = await trx
+const service = async (params, trx, withBase64 = false) => {
+	let rows = {}
+	if(withBase64){
+		rows = await trx
+        .select([
+			"i_id",
+			"c_document_code",
+			"e_tittle",
+			"c_desc",
+			"c_status",
+			"q_contributor",
+			"i_current_stat",
+			"b_active",
+			"i_created_by",
+			"n_created_by",
+			trx.raw("TO_CHAR(d_created_at, 'YYYY-MM-DD HH:mm:SS') AS d_created_at"),
+			"i_updated_by",
+			"n_updated_by",
+			trx.raw("TO_CHAR(d_updated_at, 'YYYY-MM-DD HH:mm:SS') AS d_updated_at"),
+			"i_deleted_by",
+			"n_deleted_by",
+			trx.raw("TO_CHAR(d_deleted_at, 'YYYY-MM-DD HH:mm:SS') AS d_deleted_at"),
+			"e_encode_document"
+		])
+        .from('doc.t_d_document as tdd')
+		.where({
+			"i_id": params.id
+		})
+		.first()
+	} else {
+		rows = await trx
         .select([
 			"i_id",
 			"c_document_code",
@@ -25,6 +53,8 @@ const service = async (params, trx) => {
 			"i_id": params.id
 		})
 		.first()
+	}
+
 
     if (!rows) return false
 
