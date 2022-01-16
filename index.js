@@ -16,38 +16,38 @@ var day = date.getDate();
 var month = date.getMonth() + 1;
 app.use(cors())
 //create folder/file if not exists
-if (!fs.existsSync(`./logs`)) {
-    fs.mkdirSync(`./logs`)
-}
-if (!fs.existsSync(`./logs/log-${month}`)) {
-    fs.mkdirSync(`./logs/log-${month}`)
-}
+// if (!fs.existsSync(`./logs`)) {
+//     fs.mkdirSync(`./logs`)
+// }
+// if (!fs.existsSync(`./logs/log-${month}`)) {
+//     fs.mkdirSync(`./logs/log-${month}`)
+// }
 
 //create filestream
-var accessLogStream = fs.createWriteStream(path.join(__dirname, 'logs', `log-${month}`, `access-${day}.log`), { flags: 'a' });
+// var accessLogStream = fs.createWriteStream(path.join(__dirname, 'logs', `log-${month}`, `access-${day}.log`), { flags: 'a' });
 
 //get request ID
-app.use(addRequestId)
-app.use(express.json());
+// app.use(addRequestId)
+// app.use(express.json());
 
 app.use('/static', express.static('doc-files'))
 
-// parse application/json
-app.use(bodyParser.json({limit : "100mb"}))
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({limit : "100mb", extended: false }))
+// app.use(bodyParser.json({limit: "50mb"}));
+// app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
+
+
 
 //create morgan token
-morgan.token('id', (req) => { return req.id })
-morgan.token('req-body', (req, res) => { return JSON.stringify(req.body) })
-morgan.token('res-body', (_req, res) =>
-  JSON.stringify(res.__custombody__),
-)
-morgan.token('date-wib', () => { return moment().format('YYYY-MM-DD HH:mm:SS') })
+// morgan.token('id', (req) => { return req.id })
+// morgan.token('req-body', (req, res) => { return JSON.stringify(req.body) })
+// morgan.token('res-body', (_req, res) =>
+//   JSON.stringify(res.__custombody__),
+// )
+// morgan.token('date-wib', () => { return moment().format('YYYY-MM-DD HH:mm:SS') })
 
 //log morgan
-app.use(morgan('[:date-wib] | { "id": ":id", "tag":"REQ", "from":":remote-addr", "metode":":method", "endpoint":":url", "time":":date-wib", "payload"::req-body }', { stream: accessLogStream, immediate: true }));
-app.use(morgan('[:date-wib] | { "id": ":id", "tag":"RES", "from":":remote-addr", "metode":":method", "endpoint":":url", "time":":date-wib", "response-time":":response-time ms", "payload"::res-body }', { stream: accessLogStream}));
+// app.use(morgan('[:date-wib] | { "id": ":id", "tag":"REQ", "from":":remote-addr", "metode":":method", "endpoint":":url", "time":":date-wib", "payload"::req-body }', { stream: accessLogStream, immediate: true }));
+// app.use(morgan('[:date-wib] | { "id": ":id", "tag":"RES", "from":":remote-addr", "metode":":method", "endpoint":":url", "time":":date-wib", "response-time":":response-time ms", "payload"::res-body }', { stream: accessLogStream}));
 
 app.use(
     express.urlencoded({
