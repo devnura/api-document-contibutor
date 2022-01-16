@@ -2,6 +2,21 @@ const { docxToPdfFromBase64 , initIva } = require("iva-converter");
 
 const service = async (body, trx, payload, setting) => {
 
+	const detail = await trx("doc.t_d_document_detail")
+	.update({
+		"b_approve": true,
+		"c_note": body.c_note,
+		"d_approve_at": trx.raw('NOW()')
+	}, ['i_stat', 'c_document_code'])
+	.where({
+		"c_document_code" : body.c_document_code,
+		"i_user": payload.i_id
+	})
+
+	if(detail.length < 1){
+		return false
+	}
+
 	let docType = body.e_encode_document.split(",")
 	let resBase64 = body.e_encode_document
 
@@ -18,16 +33,7 @@ const service = async (body, trx, payload, setting) => {
 		resBase64 = 'data:application/pdf;base64,' + result
 	}
 
-	const detail = await trx("doc.t_d_document_detail")
-	.update({
-		"b_approve": true,
-		"c_note": body.c_note,
-		"d_approve_at": trx.raw('NOW()')
-	}, ['i_stat', 'c_document_code'])
-	.where({
-		"c_document_code" : body.c_document_code,
-		"i_user": payload.i_id
-	})
+
 
 	const rows =  await trx("doc.t_d_document").update({
 		"i_current_stat": detail[0].i_stat,
