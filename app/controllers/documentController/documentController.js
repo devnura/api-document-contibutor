@@ -22,6 +22,7 @@ const checkUpdate = require('./services/checkUpdate')
  */
 
 const getSetting = require('../../helper/getSetting')
+const sendWhatsAppNotify = require('../../helper/sendWhatsAppNotify')
 
 exports.findDocument = async (req, res) => {
 
@@ -123,7 +124,11 @@ exports.createDocument = async (req, res) => {
 
     console.log("[*] Method name : createDocument")
     try {
-        let check = await checkCreate(req.body, db)
+
+        await db.transaction(async trx => {
+
+        let check = await checkCreate(req.body, trx)
+
         if(check.n_group){
             return res.status(200).send({
                 status: "02",
@@ -132,8 +137,8 @@ exports.createDocument = async (req, res) => {
             })
         }
 
-        const setting = await getSetting('APIKEY02', db)
-        if(!setting){
+        const settingIva = await getSetting('APIKEY02', trx)
+        if(!settingIva){
             return res.status(200).send({
                 status: "03",
                 message: "DOKUMEN GAGAL DISIMPAN HARAP HUBUNGI ADMINISTRATOR !",
@@ -141,9 +146,9 @@ exports.createDocument = async (req, res) => {
             })
         }
 
-        let role = await create(req.body, db, req.payload, setting);
+        let document = await create(req.body, trx, req.payload, settingIva);
 
-        if (!role) {
+        if (!document) {
             return res.status(200).send({
                 status: "01",
                 message: "DOKUMEN GAGAL DISIMPAN !",
@@ -151,12 +156,16 @@ exports.createDocument = async (req, res) => {
             })
         }
 
+        const settingTtalk = await getSetting('APIKEY01', trx)
+
+        await sendWhatsAppNotify(document.doc, document.nextStat, settingTtalk)
+
         return res.status(200).send({
             status: "00",
             message: "DOKUMEN BERHASIL DISIMPAN",
-            data: role
+            data: {}
         })
-
+    })
 
     } catch (e) {
         console.error("[x] message : ", e.message)
@@ -173,7 +182,9 @@ exports.updateDocument = async (req, res) => {
     console.log("[*] Method name : updateDocument")
     try {
 
-        let before = await find(req.params, db)
+        await db.transaction(async trx => {
+
+        let before = await find(req.params, trx)
 
         if(!before || before.c_status == 'X'){
             return res.status(200).send({
@@ -183,7 +194,7 @@ exports.updateDocument = async (req, res) => {
             })
         }
 
-        let check = await checkUpdate(req.body, before, db)
+        let check = await checkUpdate(req.body, before, trx)
 
         if(check.e_tittle){
             return res.status(200).send({
@@ -201,9 +212,9 @@ exports.updateDocument = async (req, res) => {
             })
         }
 
-        let user = await update(req.params, req.body, db, req.payload);
+        let document = await update(req.params, req.body, trx, req.payload);
 
-        if (!user) {
+        if (!document) {
             return res.status(200).send({
                 status: "01",
                 message: "DOKUMEN GAGAL DISIMPAN !",
@@ -214,8 +225,9 @@ exports.updateDocument = async (req, res) => {
         return res.status(200).send({
             status: "00",
             message: "DOKUMEN BERHASIL DISIMPAN",
-            data: user
+            data: document
         })
+    })
 
     } catch (e) {
         console.error("[x] message : ", e.message)
@@ -232,7 +244,9 @@ exports.deleteDocumentById = async (req, res) => {
     console.log("[*] Method name : deleteDocumentById")
     try {
 
-        let before =  await find(req.params, db)
+        await db.transaction(async trx => {
+
+        let before =  await find(req.params, trx)
 
         if(!before || before.c_status == 'X'){
             return res.status(200).send({
@@ -242,7 +256,7 @@ exports.deleteDocumentById = async (req, res) => {
             })
         }
 
-        let document = await softDelete(req.params, db, req.payload);
+        let document = await softDelete(req.params, trx, req.payload);
 
         if (!document) {
             return res.status(200).send({
@@ -257,6 +271,7 @@ exports.deleteDocumentById = async (req, res) => {
             message: "DOKUMEN BERHASIL DIHAPUS",
             data: document
         })
+    })
 
     } catch (e) {
         console.error("[x] message : ", e.message)
@@ -291,21 +306,28 @@ exports.approveDocument = async (req, res) => {
 
     console.log("[*] Method name : approvDocument")
     try {
+        await db.transaction(async trx => {
 
-        let doc = await approve(req.body, db, req.payload);
+            let document = await approve(req.body, trx, req.payload);
 
-        if (!doc) {
+            if (!document) {
+                return res.status(200).send({
+                    status: "01",
+                    message: "DOKUMEN GAGAL DISIMPAN !",
+                    data: {}
+                })
+            }
+
+            const settingTtalk = await getSetting('APIKEY01', trx)
+
+            await sendWhatsAppNotify(document.doc, document.nextStat, settingTtalk)
+
             return res.status(200).send({
-                status: "01",
-                message: "DOKUMEN GAGAL DISIMPAN !",
-                data: {}
+                status: "00",
+                message: "DOKUMEN BERHASIL DISIMPAN",
+                data: document
             })
-        }
 
-        return res.status(200).send({
-            status: "00",
-            message: "DOKUMEN BERHASIL DISIMPAN",
-            data: doc
         })
 
     } catch (e) {
