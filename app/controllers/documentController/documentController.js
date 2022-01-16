@@ -308,7 +308,16 @@ exports.approveDocument = async (req, res) => {
     try {
         await db.transaction(async trx => {
 
-            let document = await approve(req.body, trx, req.payload);
+            const settingIva = await getSetting('APIKEY02', trx)
+            if(!settingIva){
+                return res.status(200).send({
+                    status: "02",
+                    message: "DOKUMEN GAGAL DISIMPAN HARAP HUBUNGI ADMINISTRATOR !",
+                    data: {}
+                })
+            }
+
+            let document = await approve(req.body, trx, req.payload, settingIva);
 
             if (!document) {
                 return res.status(200).send({

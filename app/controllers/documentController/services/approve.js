@@ -1,4 +1,22 @@
-const service = async (body, trx, payload) => {
+const { docxToPdfFromBase64 , initIva } = require("iva-converter");
+
+const service = async (body, trx, payload, setting) => {
+
+	let docType = body.e_encode_document.split(",")
+	let resBase64 = body.e_encode_document
+
+	if(docType[0] == "data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64"){
+
+		console.log("[*] Converting Document ")
+
+		initIva(setting.e_setting);
+
+		const pdfFile = await docxToPdfFromBase64('base64docx.docx', body.e_encode_document)
+
+		let result = Buffer.from(pdfFile).toString('base64')
+
+		resBase64 = 'data:application/pdf;base64,' + result
+	}
 
 	const detail = await trx("doc.t_d_document_detail")
 	.update({
@@ -12,7 +30,8 @@ const service = async (body, trx, payload) => {
 	})
 
 	const rows =  await trx("doc.t_d_document").update({
-		"i_current_stat": detail[0].i_stat ,
+		"i_current_stat": detail[0].i_stat,
+		"e_encode_document": resBase64,
 	}, ["i_id", "c_document_code", "e_tittle", "i_current_stat"])
 	.where({
 		"c_document_code": detail[0].c_document_code
