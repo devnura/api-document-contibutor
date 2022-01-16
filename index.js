@@ -7,6 +7,7 @@ const fs = require('fs')
 const path = require('path')
 require('dotenv').config()
 const moment = require('moment')
+var bodyParser = require('body-parser')
 
 // ---
 //get dates
