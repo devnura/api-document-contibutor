@@ -1,23 +1,21 @@
 const { docxToPdfFromBase64 , initIva } = require("iva-converter");
 
-const {
-    API_KEY_FOR_IVA
-} = require('../../../config/secret')
-
 const moment = require("moment")
 
-const service = async (body, trx, payload) => {
+const service = async (body, trx, payload, setting) => {
 	try {
 
+		
 		let docType = body.e_encode_document.split(",")
 		let resBase64 = body.e_encode_document
 		let q_contributor = body.detail.length
 
-		// return docType
-
 		if(docType[0] == "data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64"){
+
 			console.log("[*] Converting Document ")
-			initIva(API_KEY_FOR_IVA);
+
+			initIva(setting.e_setting);
+
 			const pdfFile = await docxToPdfFromBase64('base64docx.docx', body.e_encode_document)
 
 			let result = Buffer.from(pdfFile).toString('base64')
@@ -55,20 +53,41 @@ const service = async (body, trx, payload) => {
 			"i_current_stat": 0,
 			"i_created_by": payload.i_id,
 			"n_created_by": payload.e_fullname,
-		}, ["i_id", "c_document_code"])
+		}, ["i_id", "c_document_code", "e_tittle", "i_current_stat"])
 
-		let dataDetail = body.detail.map((item, index)=> {
-			return {
-				"c_document_code": rows[0].c_document_code,
-				"i_user": item.i_id,
-				"i_stat": index+1
-			}
+		let dataDetail = []
+		
+		body.detail.forEach((item, index) => {
+			dataDetail.push ({
+				c_document_code: rows[0].c_document_code,
+				i_user: item.i_id,
+				i_stat: index+1
+			})
 		})
 
-		const detail = await trx("doc.t_d_document_detail").insert(dataDetail, ["i_user"])
+		console.log("to Insert : ", dataDetail)
+
+		await trx.batchInsert("doc.t_d_document_detail", dataDetail, 100)
 		
+		const nextStat = await trx
+			.first([
+				"tddd.i_stat",
+				"tmu.e_phone_number",
+				"tmu.e_fullname"
+			])
+			.from('doc.t_d_document_detail as tddd')
+			.leftJoin('public.t_m_user as tmu', function () {
+				this.on('tddd.i_user', '=', 'tmu.i_id')
+			})
+			.where("tddd.i_stat", ">", rows[0].i_current_stat)
+			.where({
+				"tddd.c_document_code" : rows[0].c_document_code,
+			})
+			.orderBy("i_stat", "ASC")
+			let doc = rows[0]
+
 		return {
-			rows, detail
+			doc, nextStat
 		}
 
 	} catch (error) {

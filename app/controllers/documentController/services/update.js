@@ -23,18 +23,19 @@ const service = async (params, body, trx, payload) => {
 	})
 	.delete()
 
-	let dataDetail = body.detail.map((item, index)=> {
-		return {
-			"c_document_code": rows[0].c_document_code,
-			"i_user": item.i_id,
-			"i_stat": index+1
-		}
-	})
+	let dataDetail = []
 
-	const detail = await trx("doc.t_d_document_detail").insert(dataDetail, ["i_user"])
+	body.detail.forEach((item, index) => {
+		dataDetail.push ({
+			c_document_code: rows[0].c_document_code,
+			i_user: item.i_id,
+			i_stat: index+1
+		})
+	})
+	await trx.batchInsert("doc.t_d_document_detail", dataDetail, 100)
 	
 	return {
-		rows, detail
+		rows
 	}
 }
 

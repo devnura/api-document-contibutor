@@ -19,7 +19,7 @@ const service = async (payload, trx) => {
         .from('doc.t_d_document as tdd')
         .leftJoin('doc.t_d_document_detail as tddd', function () {
             this.on('tdd.c_document_code', '=', 'tddd.c_document_code')
-            this.on('tdd.i_current_stat', '=', trx.raw('tddd.i_stat - 1'))
+            this.on('tdd.i_current_stat', '<', 'tddd.i_stat')
         })
 		.where({
 			"tddd.i_user": payload.i_id,
