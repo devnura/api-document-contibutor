@@ -21,12 +21,13 @@ const {
     validate,
     delete_rules,
     template_rules,
-    approv_rules
+    approv_rules,
+    get_by_user_rules
 } = require('./validator')
 
 router.get('/', jwtFerify, findDocument)
 router.get('/id/:id', jwtFerify, get_rules(), validate, findDocumentById)
-router.get('/user', jwtFerify, findDocumentByUser)
+router.get('/user', jwtFerify, get_by_user_rules(), validate, findDocumentByUser)
 router.post('/create', jwtFerify, post_rules(), validate, createDocument)
 router.put('/update/:id', jwtFerify, update_rules(), validate, updateDocument)
 router.post('/approve', jwtFerify, approv_rules(), validate, approveDocument)

@@ -93,7 +93,7 @@ exports.findDocumentByUser = async (req, res) => {
     console.log("[*] Method name : findDocumentByUser")
     try {
 
-            let document = await findByUser(req.payload, db);
+            let document = await findByUser(req.payload, db, req.body);
 
             if (!document) {
                 return res.status(200).send({
@@ -156,15 +156,26 @@ exports.createDocument = async (req, res) => {
             })
         }
 
-        const settingTtalk = await getSetting('APIKEY01', trx)
-
-        await sendWhatsAppNotify(document.doc, document.nextStat, settingTtalk)
-
-        return res.status(200).send({
+        res.status(200).send({
             status: "00",
             message: "DOKUMEN BERHASIL DISIMPAN",
             data: {}
         })
+
+        const settingTtalk = await getSetting('APIKEY01', trx)
+
+        const linkUrl = await getSetting('WEBURL', trx)
+
+        const settingWa = await getSetting("NOTWA01",trx)
+
+        if(settingTtalk && linkUrl && settingWa){
+
+            const content = `${settingWa.e_setting} \n\nNama : ${document.nextStat.e_fullname} \nJudul : ${document.doc.e_tittle} \nKode : ${document.doc.c_document_code} \nLink : ${linkUrl.e_setting}`
+            
+            await sendWhatsAppNotify(document.nextStat.e_phone_number, content, settingTtalk,)
+
+        }
+
     })
 
     } catch (e) {
@@ -327,15 +338,25 @@ exports.approveDocument = async (req, res) => {
                 })
             }
 
-            const settingTtalk = await getSetting('APIKEY01', trx)
-
-            await sendWhatsAppNotify(document.doc, document.nextStat, settingTtalk)
-
-            return res.status(200).send({
+            res.status(200).send({
                 status: "00",
                 message: "DOKUMEN BERHASIL DISIMPAN",
                 data: document
             })
+
+            const settingTtalk = await getSetting('APIKEY01', trx)
+
+            const linkUrl = await getSetting('WEBURL', trx)
+
+            const settingWa = await getSetting("NOTWA01",trx)
+
+            if(settingTtalk && linkUrl && settingWa){
+
+                const content = `${settingWa.e_setting} \n\nNama : ${document.nextStat.e_fullname} \nJudul : ${document.doc.e_tittle} \nKode : ${document.doc.c_document_code} \nLink : ${linkUrl.e_setting}`
+                
+                await sendWhatsAppNotify(document.nextStat.e_phone_number, content, settingTtalk,)
+                
+            }
 
         })
 

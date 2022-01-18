@@ -62,7 +62,12 @@ const get_rules = () => {
     ]
 }
 
-
+const get_by_user_rules = () => {
+    return [
+        check('b_approve').notEmpty().withMessage('id is required!')
+        .isBoolean().withMessage('Must be a boolean true or false')
+    ]
+}
 
 const validate = async (req, res, next) => {
     const errors = await validationResult(req)
@@ -85,5 +90,6 @@ module.exports = {
     delete_rules,
     validate,
     template_rules,
-    approv_rules
+    approv_rules,
+    get_by_user_rules
 }
