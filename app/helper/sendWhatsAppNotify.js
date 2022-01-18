@@ -1,14 +1,14 @@
 const axios = require("axios");
 
-const helper = async (document, user, setting) => {
+const helper = async (e_phone_number, content, setting) => {
 
     try {
 
         const res = await axios.post('https://sendtalk-api.taptalk.io/api/v1/message/send_whatsapp',
         {
-            "phone": user.e_phone_number,
+            "phone": e_phone_number,
             "messageType": "text",
-            "body": `Hi ${user.e_fullname}! Dokumen ${document.e_tittle}, dengan kode ${document.c_document_code} siap untuk kamu review `
+            "body": `${content}`
         },
          {
             headers: {
