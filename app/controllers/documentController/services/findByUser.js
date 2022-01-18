@@ -8,7 +8,7 @@ const service = async (payload, trx, body) => {
 				"tdd.c_desc",
 				"tdd.c_status",
 				"tddd.i_stat",
-				trx.raw("TO_CHAR(tddd.d_approve_at, 'YYYY-MM-DD HH:mm:SS') AS d_created_at"),
+				trx.raw("TO_CHAR(tddd.d_approve_at, 'YYYY-MM-DD HH:mm:SS') AS d_approve_at"),
 				"tdd.i_current_stat",
 				"tdd.q_contributor",
 				"tdd.b_active",
