@@ -16,7 +16,7 @@ const service = async (body, trx, payload) => {
 		i_group: body.i_group,
 		i_created_by: payload.i_id,
 		n_created_by: payload.n_username
-	}, ["i_id", "n_username"])
+	}, ["i_id", "n_username", "e_fullname", "e_phone_number"])
 
     if (!rows) return false
 
