@@ -27,7 +27,7 @@ const {
 
 router.get('/', jwtFerify, findDocument)
 router.get('/id/:id', jwtFerify, get_rules(), validate, findDocumentById)
-router.get('/user', jwtFerify, get_by_user_rules(), validate, findDocumentByUser)
+router.post('/user', jwtFerify, get_by_user_rules(), validate, findDocumentByUser)
 router.post('/create', jwtFerify, post_rules(), validate, createDocument)
 router.put('/update/:id', jwtFerify, update_rules(), validate, updateDocument)
 router.post('/approve', jwtFerify, approv_rules(), validate, approveDocument)
