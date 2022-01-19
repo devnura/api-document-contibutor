@@ -21,7 +21,7 @@ const service = async (trx) => {
 		.where(
 			'tdd.c_status', "=", "A"
 		)
-		.orderBy("i_id", "ASC")
+		.orderBy("i_id", "ASC") 
 
     if (!rows) return false
 

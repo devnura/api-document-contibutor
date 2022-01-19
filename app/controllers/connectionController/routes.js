@@ -1,8 +1,12 @@
-const express = require('express');
-const router = express.Router();
-const connection = require('./connection')
-const jwtFerify = require('../../middleware/jwtFerify')
+const express = require('express')
+const router = express.Router()
 
-router.get('/check', connection);
+const {
+    connectionDb,
+    connectionWa
+} = require('./connection')
+
+router.get('/check/db', connectionDb);
+router.post('/check/wa', connectionWa);
 
 module.exports = router;

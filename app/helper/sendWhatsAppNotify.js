@@ -1,31 +1,32 @@
-const {
-    API_KEY_FOR_IVA
-} = require('../../../config/secret')
+const axios = require("axios");
 
-const helper = async (params, trx) => {
+const helper = async (e_phone_number, content, setting) => {
 
-    const location = window.location.hostname;
-    const settings = {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'API-key': API_KEY_FOR_IVA
-        }
-    };
     try {
-        const fetchResponse = await fetch(`http://${location}:9000/api/sensors/`, settings);
 
-        const data = await fetchResponse.json();
+        const res = await axios.post('https://sendtalk-api.taptalk.io/api/v1/message/send_whatsapp',
+        {
+            "phone": e_phone_number,
+            "messageType": "text",
+            "body": `${content}`
+        },
+         {
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'API-key': setting.e_setting
+            }
+        })
 
-        return data;
+        console.log("[TapTalk] : ", res.data)
 
-    } catch (e) {
-        
-        return e;
-    } 
+        return res
 
-    return rows
+    } catch (error) {
+        if(error.response) return error.response
+        else return JSON.parse(JSON.stringify(error))  
+    }
+    
 }
 
 module.exports = helper;

@@ -1,5 +1,3 @@
-const moment = require('moment')
-
 const service = async (params, trx, payload) => {
 
     let rows = await trx('doc.t_d_document').update({
@@ -7,8 +5,8 @@ const service = async (params, trx, payload) => {
         "b_active": false,
 		"i_deleted_by" : payload.i_id,
 		"n_deleted_by" : payload.e_fullname,
-		"d_deleted_at": moment()
-		}, ['i_id', 'n_group'])
+		"d_deleted_at": trx.raw('NOW()')
+		}, ['i_id', 'e_tittle'])
         .where({
         "i_id": params.id,
         })
