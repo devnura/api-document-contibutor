@@ -118,21 +118,16 @@ exports.createUser = async (req, res) => {
                     message: "USER GAGAL DISIMPAN !",
                     data: {}
             }
-
-            res.status(200).send({
-                status: "00",
-                message: "USER BERHASIL DISIMPAN",
-                data: user
-            })
-            
             const settingTtalk = await getSetting('APIKEY01', trx)
 
             const linkUrl = await getSetting('WEBURL', trx)
 
             const settingWa = await getSetting("NOTWA02",trx)
 
-            const role = await getRole(user.i_group, trx)
+            const role = await getRole({id: req.body.i_group}, trx)
 
+            console.log(settingTtalk, linkUrl, settingWa, role);
+            
             if(settingTtalk && linkUrl && settingWa && role){
 
                 const content = `${settingWa.e_setting} \n\nNama : ${user.e_fullname} \nRole : ${role.n_role} \nUsername : ${user.n_username} \nPassword : ${req.body.e_password}  \nLink : ${linkUrl.e_setting}`
@@ -140,6 +135,14 @@ exports.createUser = async (req, res) => {
                 await sendWhatsAppNotify(user.e_phone_number, content, settingTtalk)
                 
             }
+
+            res.status(200).send({
+                status: "00",
+                message: "USER BERHASIL DISIMPAN",
+                data: user
+            })
+            
+
         })
 
     } catch (e) {

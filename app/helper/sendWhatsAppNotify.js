@@ -18,8 +18,6 @@ const helper = async (e_phone_number, content, setting) => {
             }
         })
 
-        console.log("[TapTalk] : ", res.data)
-
         return res
 
     } catch (error) {
