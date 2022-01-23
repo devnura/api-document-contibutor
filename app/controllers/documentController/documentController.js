@@ -344,18 +344,22 @@ exports.approveDocument = async (req, res) => {
                 data: document
             })
 
-            const settingTtalk = await getSetting('APIKEY01', trx)
-
+            //  Get setting
+            const apiKey = await getSetting('APIKEY01', trx)
             const linkUrl = await getSetting('WEBURL', trx)
 
-            const settingWa = await getSetting("NOTWA01",trx)
+            // Notif WA to next stat
+            const notifToNextState = await getSetting("NOTWA01",trx)
+            if(apiKey && linkUrl && notifToNextState){
+                const content = `${notifToNextState.e_setting} \n\nNama : ${document.nextStat.e_fullname} \nJudul : ${document.doc.e_tittle} \nKode : ${document.doc.c_document_code} \nLink : ${linkUrl.e_setting}`
+                await sendWhatsAppNotify(document.nextStat.e_phone_number, content, apiKey)
+            }
 
-            if(settingTtalk && linkUrl && settingWa){
-
-                const content = `${settingWa.e_setting} \n\nNama : ${document.nextStat.e_fullname} \nJudul : ${document.doc.e_tittle} \nKode : ${document.doc.c_document_code} \nLink : ${linkUrl.e_setting}`
-                
-                await sendWhatsAppNotify(document.nextStat.e_phone_number, content, settingTtalk,)
-                
+            // Notif WA to current stat
+            const notifToCurrentState = await getSetting("NOTWA04",trx)
+            if(apiKey && linkUrl && notifToCurrentState){
+                const content = `${notifToCurrentState.e_setting} \n\nNama : ${document.currentStat.e_fullname} \nJudul : ${document.doc.e_tittle} \nKode : ${document.doc.c_document_code} \nApproved At : ${document.currentStat.d_approve_at} \nLink : ${linkUrl.e_setting}` 
+                await sendWhatsAppNotify(document.currentStat.e_phone_number, content, apiKey) 
             }
 
         })

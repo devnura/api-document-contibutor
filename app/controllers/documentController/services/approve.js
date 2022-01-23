@@ -59,10 +59,27 @@ const service = async (body, trx, payload, setting) => {
 	})
 	.orderBy("i_stat", "ASC")
 
+	const currentStat = await trx
+	.first([
+		"tddd.i_stat",
+		"tmu.e_phone_number",
+		"tmu.e_fullname",
+		"tddd.d_approve_at"
+	])
+	.from('doc.t_d_document_detail as tddd')
+	.leftJoin('public.t_m_user as tmu', function () {
+		this.on('tddd.i_user', '=', 'tmu.i_id')
+	})
+	.where("tddd.i_stat", "=", rows[0].i_current_stat)
+	.where({
+		"tddd.c_document_code" : rows[0].c_document_code,
+	})
+	.orderBy("i_stat", "ASC")
+
 	let doc = rows[0]
 
 	return {
-		doc, nextStat
+		doc, nextStat, currentStat
 	}
 
 }
